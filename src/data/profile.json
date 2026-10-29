@@ -1,0 +1,279 @@
+{
+  "meta": {
+    "siteTitle": "Le monde de Marilin",
+    "tagline": "Un nouveau jour commence.",
+    "welcome": "Bienvenue dans le monde de Marilin, ingénieur en devenir & développeur",
+    "updated": "2026-10"
+  },
+  "identity": {
+    "name": "Marilin BADJI",
+    "firstName": "Marilin",
+    "role": "Ingénieur en devenir — informatique et systèmes électriques",
+    "origin": "Bohicon, Bénin",
+    "github": "https://github.com/marilin66",
+    "email": "marilinbadji@gmail.com",
+    "phone": "+2290199395776",
+    "linkedin": "https://www.linkedin.com/in/marilin-badji"
+  },
+  "photo": {
+    "src": "/photo/portrait.jpeg",
+    "placeholder": "Portrait de Marilin",
+    "note": "Portrait de Marilin BADJI."
+  },
+  "intro": {
+    "about": "Jeune professionnel béninois, mon parcours se situe à la croisée du génie électrique, de l'informatique et du développement de solutions numériques. Parti de l'électrotechnique, je me suis tourné vers la programmation, la conception d'applications et les architectures logicielles. J'apprends en continu, avec la volonté de transformer les connaissances en réalisations concrètes et de concevoir des solutions utiles aux personnes, aux entreprises et à la société.",
+    "motivation": "Devenir compétent et indépendant, bâtir une vie stable et soutenir mes proches."
+  },
+  "aboutChapters": [
+    {
+      "id": "about-origines",
+      "title": "Bohicon, point de départ",
+      "body": "Je suis originaire de Bohicon, au Bénin. Mon parcours scolaire commence à Dassa : le CEP en 2016 à SOS Dassa, puis le BEPC en 2020 au CEG 1 de Dassa. Deux étapes modestes, et les premières marches de tout ce qui suit."
+    },
+    {
+      "id": "about-formation",
+      "title": "La voie technique",
+      "body": "En 2022, je suis une formation technique sanctionnée par un CAP. En 2023, j'obtiens le baccalauréat technique F3, série électrotechnique, au Lycée Technique de Bohicon. En juin 2022 et en juin 2023, je découvre concrètement les installations électriques de bâtiment. Je poursuis ensuite dans l'enseignement supérieur, en génie électrique et informatique à l'INSTI de Lokossa (UNSTIM), où j'obtiens ma Licence professionnelle en Génie Électrique et Informatique."
+    },
+    {
+      "id": "about-bascule",
+      "title": "La bascule vers le logiciel",
+      "body": "De l'électrotechnique, je glisse vers la programmation. Mon intérêt se porte sur la conception d'applications et les architectures logicielles. Les stages accompagnent ce mouvement : maintenance informatique chez CAMAH en août 2024, informatique et télécommunications au CAP EPAC, puis maintenance informatique et mécanographie chez DREAM TECH en août 2025. À partir du 24 août 2026, je rejoins la Direction Générale de la Planification de l'Énergie Rurale pour un stage de trois mois. Je ne renie pas l'électricité : je la garde comme socle et je construis le logiciel par-dessus."
+    },
+    {
+      "id": "about-apprentissage",
+      "title": "Apprendre en continu",
+      "body": "J'apprends en continu. Côté développement : PHP/Laravel, architecture MVC, API REST, MySQL, PostgreSQL, Java (POO), React, notions de TypeScript, Django REST Framework, Flutter, Git/GitHub. Côté systèmes : bases d'électrotechnique, électricité bâtiment, maintenance informatique, notions de réseaux et télécommunications, familiarité avec AutoCAD. En 2025, j'ajoute trois certifications YALI : Personal Money Management, Digital Marketing for Entrepreneurs et Starting & Running a Business."
+    },
+    {
+      "id": "about-motivation",
+      "title": "Ce qui me fait avancer",
+      "body": "Ma motivation est simple et personnelle : devenir compétent et indépendant, bâtir une vie stable et soutenir mes proches. Cette motivation guide mes choix de formation comme mes projets."
+    },
+    {
+      "id": "about-vision",
+      "title": "Une technologie utile",
+      "body": "Je veux transformer les connaissances en réalisations concrètes et concevoir des solutions utiles aux personnes, aux entreprises et à la société. C'est la direction que je veux donner à mon travail : des choses qui servent réellement."
+    },
+    {
+      "id": "about-suite",
+      "title": "La suite",
+      "body": "Progresser en ingénierie, en développement logiciel et dans la conception de solutions technologiques. Résoudre des problèmes concrets. Assumer mes responsabilités et apporter de la valeur. Je préfère que mon travail et mes réalisations parlent pour moi."
+    }
+  ],
+  "timeline": [
+    {
+      "id": "tl-cep",
+      "year": "2016",
+      "label": "CEP",
+      "place": "SOS Dassa",
+      "note": "Certificat d'études primaires."
+    },
+    {
+      "id": "tl-bepc",
+      "year": "2020",
+      "label": "BEPC",
+      "place": "CEG 1 de Dassa",
+      "note": "Brevet d'études du premier cycle."
+    },
+    {
+      "id": "tl-cap",
+      "year": "2022",
+      "label": "CAP",
+      "place": "Formation technique",
+      "note": "Certificat d'Aptitude Professionnelle en formation technique."
+    },
+    {
+      "id": "tl-bac",
+      "year": "2023",
+      "label": "Baccalauréat technique F3",
+      "place": "Lycée Technique de Bohicon",
+      "note": "Série F3, électrotechnique."
+    },
+    {
+      "id": "tl-insti",
+      "year": "Enseignement supérieur",
+      "label": "Génie électrique et informatique",
+      "place": "INSTI de Lokossa — UNSTIM",
+      "note": "Licence professionnelle en Génie Électrique et Informatique obtenue."
+    }
+  ],
+  "experiences": [
+    {
+      "id": "exp-elec-2022",
+      "period": "Juin 2022",
+      "org": "Électricité bâtiment",
+      "role": "Découverte pratique des installations",
+      "place": "Bohicon, Bénin",
+      "detail": "Première approche du terrain sur des installations électriques de bâtiment : câblage et raccordement."
+    },
+    {
+      "id": "exp-elec-2023",
+      "period": "Juin 2023",
+      "org": "Électricité bâtiment",
+      "role": "Découverte pratique des installations",
+      "place": "Bohicon, Bénin",
+      "detail": "Pratique des installations électriques de bâtiment, diagnostic et pose d'appareillages."
+    },
+    {
+      "id": "exp-camah",
+      "period": "Août 2024",
+      "org": "CAMAH",
+      "role": "Stage — maintenance informatique",
+      "place": "Bénin",
+      "detail": "Diagnostic matériel, maintenance préventive et corrective de parcs informatiques, installation et support."
+    },
+    {
+      "id": "exp-epac",
+      "period": "Février — Mai 2025 (4 mois)",
+      "org": "CAP EPAC",
+      "role": "Informatique et télécommunications",
+      "place": "Abomey-Calavi, Bénin",
+      "detail": "Travaux pratiques et assistance technique en systèmes informatiques, réseaux locaux et télécommunications."
+    },
+    {
+      "id": "exp-dreamtech",
+      "period": "Août 2025",
+      "org": "DREAM TECH",
+      "role": "Stage — maintenance informatique et mécanographie",
+      "place": "Bénin",
+      "detail": "Maintenance des postes informatiques, mécanographie, optimisation système et assistance utilisateur."
+    },
+    {
+      "id": "exp-dgper",
+      "period": "À partir du 24 août 2026 (3 mois)",
+      "org": "Direction Générale de la Planification de l'Énergie Rurale",
+      "role": "Stage",
+      "place": "Cotonou, Bénin",
+      "detail": "Appui à la planification énergétique rurale, exploitation de données et suivi technique de projets."
+    }
+  ],
+  "skills": {
+    "development": [
+      "PHP / Laravel",
+      "Architecture MVC",
+      "API REST",
+      "MySQL",
+      "PostgreSQL",
+      "Java (POO)",
+      "React",
+      "Notions de TypeScript",
+      "Django REST Framework",
+      "Flutter",
+      "Git / GitHub"
+    ],
+    "systems": [
+      "Bases d'électrotechnique",
+      "Électricité bâtiment",
+      "Maintenance informatique",
+      "Notions de réseaux et télécommunications",
+      "AutoCAD (familiarité)"
+    ]
+  },
+  "projects": [
+    {
+      "id": "project-hopitel",
+      "name": "HOPITEL",
+      "kind": "Plateforme de santé numérique",
+      "summary": "Plateforme reliant patients, médecins, établissements et laboratoires : prise de rendez-vous, communication, suivi et consultation des résultats d'analyses.",
+      "role": "Contribution principale : le frontend, en binôme avec une personne chargée du backend.",
+      "stack": ["React", "Django REST Framework", "PostgreSQL", "Flutter"],
+      "demo": "https://github.com/Marilin66",
+      "repo": "https://github.com/Marilin66",
+      "source": "Dossier personnel"
+    },
+    {
+      "id": "project-qrflow",
+      "name": "QR Flow",
+      "kind": "Application web et mobile",
+      "summary": "Détecte, décode et interprète les QR codes déjà affichés à l'écran, depuis une image importée ou la caméra. Toutes les analyses sont locales : aucun backend, aucune donnée envoyée sur Internet.",
+      "role": "Conception et développement complet de l'application (analyse locale temps réel, UI responsive).",
+      "stack": ["Flutter", "Dart", "React", "Vite", "SQLite"],
+      "demo": "https://qr-flow-jade.vercel.app",
+      "repo": "https://github.com/Marilin66/QRFlow",
+      "source": "GitHub"
+    },
+    {
+      "id": "project-journee",
+      "name": "Une journée sans informaticiens",
+      "kind": "One-page narrative",
+      "summary": "Une page narrative en français, taquin mais bienveillant, qui raconte ce que les informaticiens font au quotidien. Réalisée sans dépendance superflue, avec un contenu centralisé dans un seul fichier.",
+      "role": "Conception, rédaction et développement complet de la single-page narrative en React et Tailwind CSS.",
+      "stack": ["React 18", "Vite", "Framer Motion", "Tailwind CSS"],
+      "demo": "https://journee-sans-informaticiens.vercel.app",
+      "repo": "https://github.com/Marilin66/journee-sans-informaticiens",
+      "source": "GitHub"
+    },
+    {
+      "id": "project-esante",
+      "name": "E-Santé Bénin",
+      "kind": "Application mobile de santé",
+      "summary": "Application mobile multi-plateforme pour patients, médecins, laborantins et administrateurs : recherche de médecins, prise de rendez-vous, messagerie, consultation des résultats d'analyses et gestion des services d'un établissement.",
+      "role": "Conception et développement de l'application mobile en Flutter avec intégration d'API REST.",
+      "stack": ["Flutter", "Dart", "API REST"],
+      "demo": "https://github.com/Marilin66/App-mobile",
+      "repo": "https://github.com/Marilin66/App-mobile",
+      "source": "GitHub"
+    }
+  ],
+  "certifications": [
+    {
+      "id": "cert-money",
+      "name": "Personal Money Management",
+      "issuer": "YALI",
+      "year": "2025"
+    },
+    {
+      "id": "cert-marketing",
+      "name": "Digital Marketing for Entrepreneurs",
+      "issuer": "YALI",
+      "year": "2025"
+    },
+    {
+      "id": "cert-business",
+      "name": "Starting & Running a Business",
+      "issuer": "YALI",
+      "year": "2025"
+    }
+  ],
+  "engagement": [
+    {
+      "id": "eng-artistique",
+      "name": "Ensemble Artistique et Culturel",
+      "role": "Responsabilités de planification",
+      "detail": "Coordination logistique, planification des répétitions et événements culturels."
+    },
+    {
+      "id": "eng-cinema",
+      "name": "Campus Ciné Club",
+      "role": "Participation à la promotion",
+      "detail": "Animation, organisation des projections et communication auprès de la communauté étudiante."
+    }
+  ],
+  "languages": [
+    { "id": "lang-fr", "name": "Français", "level": "Courant / Professionnel" },
+    { "id": "lang-fon", "name": "Fon", "level": "Langue maternelle" },
+    { "id": "lang-en", "name": "Anglais", "level": "Technique / Intermédiaire" }
+  ],
+  "ambitions": [
+    "Progresser en ingénierie, en développement logiciel et dans la conception de solutions technologiques.",
+    "Résoudre des problèmes concrets.",
+    "Faire parler mon travail et mes réalisations pour moi.",
+    "Assumer mes responsabilités et apporter de la valeur."
+  ],
+  "ui": {
+    "chapterOrder": [
+      "bienvenue",
+      "about",
+      "parcours",
+      "skills",
+      "projects",
+      "experiences",
+      "certifications",
+      "engagement",
+      "ambitions",
+      "contact"
+    ],
+    "placeholders": []
+  }
+}
