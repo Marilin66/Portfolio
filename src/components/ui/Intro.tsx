@@ -2,7 +2,6 @@ import { useRef } from 'react'
 import { profile } from '../../data/selectors'
 import { useExperience } from '../../store/useExperience'
 import { useFocusTrap } from '../../hooks/useFocusTrap'
-import { switchToClassic } from '../../lib/routes'
 
 const BOOT_LABELS = [
   ['01', "Lumière d'aube"],
@@ -61,13 +60,6 @@ export function Intro() {
         <div className="intro__actions">
           <button type="button" className="btn btn--primary" onClick={finishIntro}>
             {sceneReady ? 'Entrer dans la pièce' : 'Entrer pendant le chargement'}
-          </button>
-          <button
-            type="button"
-            className="btn btn--ghost"
-            onClick={switchToClassic}
-          >
-            Version 2D
           </button>
         </div>
 
