@@ -3,7 +3,6 @@ import { ANCHORS } from '../../experience/anchors'
 import { useExperience } from '../../store/useExperience'
 import { scrollToChapter } from '../../lib/scroll'
 import { playTick, setAudioEnabled } from '../../lib/audio'
-import { switchToClassic } from '../../lib/routes'
 
 function ChapterIndex() {
   const chapter = useExperience((state) => state.chapter)
@@ -84,13 +83,6 @@ export function Hud() {
             }}
           >
             Son <span className="hud__state">{audio ? 'on' : 'off'}</span>
-          </button>
-          <button
-            type="button"
-            className="hud__classic"
-            onClick={switchToClassic}
-          >
-            Version 2D
           </button>
         </div>
       </header>

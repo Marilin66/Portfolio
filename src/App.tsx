@@ -4,39 +4,23 @@ import { Hud } from './components/ui/Hud'
 import { ChapterPanel } from './components/ui/ChapterPanel'
 import { Schematic } from './components/ui/Schematic'
 import { Intro } from './components/ui/Intro'
-import { ClassicView } from './components/ui/ClassicView'
 import { useExperience } from './store/useExperience'
 import { useReducedMotion } from './hooks/useReducedMotion'
-import { classicRequestedByUrl, detectTier, hasWebGL } from './lib/device'
+import { detectTier } from './lib/device'
 import { chapterFromProgress, initScroll, scrollToChapter } from './lib/scroll'
 import { playTick } from './lib/audio'
 import { profile } from './data/selectors'
-import { switchTo3D } from './lib/routes'
 
-// Le moteur 3D est chargé après l'interface : l'introduction et la version 2D
-// n'attendent pas three.js pour s'afficher.
+// Le moteur 3D est chargé en différé pour ne pas bloquer l'introduction.
 const Scene = lazy(() =>
   import('./experience/Scene').then((module) => ({ default: module.Scene })),
 )
 
 export default function App() {
   const reduced = useReducedMotion()
-  const classic = useExperience((state) => state.classic)
   const introDone = useExperience((state) => state.introDone)
   const chapter = useExperience((state) => state.chapter)
   const activeChapter = CHAPTERS[Math.min(chapter, CHAPTERS.length - 1)]
-
-  // Si WebGL est absent, la version classique est forcée sans canvas 3D.
-  const isClassic = classic || !hasWebGL()
-
-  // Écoute les boutons Précédent / Suivant du navigateur pour synchroniser l'URL et l'affichage.
-  useEffect(() => {
-    const onPopState = () => {
-      useExperience.getState().setClassic(classicRequestedByUrl())
-    }
-    window.addEventListener('popstate', onPopState)
-    return () => window.removeEventListener('popstate', onPopState)
-  }, [])
 
   useEffect(() => {
     useExperience.getState().setReduced(reduced)
@@ -46,24 +30,18 @@ export default function App() {
     useExperience.getState().setTier(detectTier())
   }, [])
 
-  // Le titre reflète la version affichée (et revient au titre principal
-  // après un passage par la version 2D).
+  // Titre de l'onglet.
   useEffect(() => {
-    document.title = isClassic
-      ? `${profile.identity.name} — Portfolio`
-      : `${profile.identity.name} — ${profile.meta.siteTitle}`
-  }, [isClassic])
+    document.title = `${profile.identity.name} — ${profile.meta.siteTitle}`
+  }, [])
 
   // Progression de scroll → chapitre actif.
   useEffect(() => {
-    if (isClassic) return
-
     return initScroll((progress) => {
       const state = useExperience.getState()
       const next = chapterFromProgress(progress, CHAPTERS.length)
 
-      // Un scroll ferme toujours un cadrage rapproché : sinon la caméra
-      // resterait aimantée sur l'objet cliqué pendant la visite.
+      // Un scroll ferme toujours un cadrage rapproché.
       if (state.selectedId) state.closeSelection()
 
       if (next === state.chapter) return
@@ -72,28 +50,25 @@ export default function App() {
       state.hover(null)
       if (state.introDone) playTick('navigate')
     })
-  }, [isClassic])
+  }, [])
 
   // L'introduction bloque le scroll tant qu'elle est affichée.
   useEffect(() => {
     const root = document.documentElement
-    root.classList.toggle('is-locked', !introDone && !isClassic)
+    root.classList.toggle('is-locked', !introDone)
     return () => root.classList.remove('is-locked')
-  }, [introDone, isClassic])
+  }, [introDone])
 
   // Raccourcis clavier : Échap pour fermer, flèches pour changer de zone,
   // 0–9 pour un accès direct, Home/End pour les extrémités.
   useEffect(() => {
-    if (isClassic) return
-
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target instanceof HTMLElement ? event.target : null
       if (event.metaKey || event.ctrlKey || event.altKey) return
 
       const state = useExperience.getState()
 
-      // Échap doit toujours fonctionner, y compris quand le focus est dans
-      // un lien du panneau ou dans le plan.
+      // Échap doit toujours fonctionner.
       if (event.key === 'Escape') {
         if (state.mapOpen) state.setMapOpen(false)
         else if (state.selectedId) state.closeSelection()
@@ -105,7 +80,7 @@ export default function App() {
       if (target?.closest('.panel__body')) return
       if (state.mapOpen) return
 
-      // ←/→ : chapitre précédent / suivant, comme une visite guidée.
+      // ←/→ : chapitre précédent / suivant.
       if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
         event.preventDefault()
         const direction = event.key === 'ArrowRight' ? 1 : -1
@@ -120,7 +95,7 @@ export default function App() {
         return
       }
 
-      // 0–9 correspondent aux numéros affichés (00, 01… 09).
+      // 0–9 correspondent aux numéros affichés.
       if (!/^[0-9]$/.test(event.key)) return
       const index = Number(event.key)
       if (index < CHAPTERS.length) {
@@ -132,12 +107,10 @@ export default function App() {
 
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [isClassic])
+  }, [])
 
-  // Navigation tactile mobile : balayer horizontalement pour changer de zone
+  // Navigation tactile mobile : balayer horizontalement pour changer de zone.
   useEffect(() => {
-    if (isClassic) return
-
     let startX = 0
     let startY = 0
     let startTime = 0
@@ -161,7 +134,7 @@ export default function App() {
       const deltaY = event.changedTouches[0].clientY - startY
       const duration = Date.now() - startTime
 
-      // Balayage horizontal net (> 45px) et plus horizontal que vertical
+      // Balayage horizontal net (> 45px) et plus horizontal que vertical.
       if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 1.25 && duration < 600) {
         const state = useExperience.getState()
         const direction = deltaX < 0 ? 1 : -1
@@ -179,13 +152,7 @@ export default function App() {
       window.removeEventListener('touchstart', onTouchStart)
       window.removeEventListener('touchend', onTouchEnd)
     }
-  }, [isClassic])
-
-  const enter3D = switchTo3D
-
-  if (isClassic) {
-    return <ClassicView onEnter3D={enter3D} />
-  }
+  }, [])
 
   return (
     <div className="app">

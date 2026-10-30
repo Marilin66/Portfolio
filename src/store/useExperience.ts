@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { classicRequestedByUrl } from '../lib/device'
 
 export type Tier = 'high' | 'medium' | 'low'
 
@@ -58,7 +57,7 @@ export const useExperience = create<ExperienceState>((set) => ({
   audio: false,
   mapOpen: false,
   introDone: false,
-  classic: typeof window !== 'undefined' ? classicRequestedByUrl() : false,
+  classic: false,
   panelCollapsed: false,
   sceneReady: false,
 
