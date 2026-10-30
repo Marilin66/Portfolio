@@ -509,26 +509,88 @@ export function ChapterPanel() {
   const chapter = useExperience((state) => state.chapter)
   const selectedId = useExperience((state) => state.selectedId)
   const closeSelection = useExperience((state) => state.closeSelection)
+  const reduced = useExperience((state) => state.reduced)
+  const panelCollapsed = useExperience((state) => state.panelCollapsed)
+  const togglePanelCollapsed = useExperience((state) => state.togglePanelCollapsed)
   const data = CHAPTERS[Math.min(chapter, CHAPTERS.length - 1)]
 
+  const hasPrev = chapter > 0
+  const hasNext = chapter < CHAPTERS.length - 1
+
+  const goPrev = () => {
+    if (!hasPrev) return
+    playTick('navigate')
+    scrollToChapter(chapter - 1, reduced)
+  }
+
+  const goNext = () => {
+    if (!hasNext) return
+    playTick('navigate')
+    scrollToChapter(chapter + 1, reduced)
+  }
+
   return (
-    <aside key={data.id} id="contenu" tabIndex={-1} className="panel" aria-label={`Zone ${data.index} — ${data.title}`}>
+    <aside
+      key={data.id}
+      id="contenu"
+      tabIndex={-1}
+      className={`panel${panelCollapsed ? ' is-collapsed' : ''}`}
+      aria-label={`Zone ${data.index} — ${data.title}`}
+    >
       <header className="panel__head">
         <div className="panel__meta">
           <span className="eyebrow">
             {data.index} / {data.kicker}
           </span>
-          {selectedId && (
-            <button type="button" className="panel__back" onClick={closeSelection}>
-              Vue d’ensemble
+          <div className="panel__head-actions">
+            {selectedId && (
+              <button type="button" className="panel__back" onClick={closeSelection}>
+                Vue d’ensemble
+              </button>
+            )}
+            <button
+              type="button"
+              className="panel__toggle-btn"
+              onClick={togglePanelCollapsed}
+              aria-expanded={!panelCollapsed}
+              aria-label={panelCollapsed ? 'Ouvrir la fiche de contenu' : 'Réduire la fiche pour voir la pièce'}
+            >
+              {panelCollapsed ? 'Fiche ↑' : 'Réduire ↓'}
             </button>
-          )}
+          </div>
         </div>
-        <h2>{data.title}</h2>
+        <div className="panel__title-row">
+          <h2>{data.title}</h2>
+          <div className="panel__nav-arrows">
+            <button
+              type="button"
+              className="panel__nav-btn"
+              onClick={goPrev}
+              disabled={!hasPrev}
+              aria-label="Zone précédente"
+            >
+              ←
+            </button>
+            <span className="panel__nav-count" aria-hidden="true">
+              {data.index}/{CHAPTERS[CHAPTERS.length - 1]?.index}
+            </span>
+            <button
+              type="button"
+              className="panel__nav-btn"
+              onClick={goNext}
+              disabled={!hasNext}
+              aria-label="Zone suivante"
+            >
+              →
+            </button>
+          </div>
+        </div>
       </header>
-      <div className="panel__body">
-        <ChapterBody index={chapter} />
-      </div>
+      {!panelCollapsed && (
+        <div className="panel__body">
+          <ChapterBody index={chapter} />
+        </div>
+      )}
     </aside>
   )
 }

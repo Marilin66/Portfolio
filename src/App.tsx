@@ -134,6 +134,53 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [isClassic])
 
+  // Navigation tactile mobile : balayer horizontalement pour changer de zone
+  useEffect(() => {
+    if (isClassic) return
+
+    let startX = 0
+    let startY = 0
+    let startTime = 0
+
+    const onTouchStart = (event: TouchEvent) => {
+      if (event.touches.length !== 1) return
+      const target = event.target instanceof HTMLElement ? event.target : null
+      if (target?.closest('.panel__body, .map, .intro')) return
+
+      startX = event.touches[0].clientX
+      startY = event.touches[0].clientY
+      startTime = Date.now()
+    }
+
+    const onTouchEnd = (event: TouchEvent) => {
+      if (event.changedTouches.length !== 1) return
+      const target = event.target instanceof HTMLElement ? event.target : null
+      if (target?.closest('.panel__body, .map, .intro')) return
+
+      const deltaX = event.changedTouches[0].clientX - startX
+      const deltaY = event.changedTouches[0].clientY - startY
+      const duration = Date.now() - startTime
+
+      // Balayage horizontal net (> 45px) et plus horizontal que vertical
+      if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 1.25 && duration < 600) {
+        const state = useExperience.getState()
+        const direction = deltaX < 0 ? 1 : -1
+        const next = Math.min(CHAPTERS.length - 1, Math.max(0, state.chapter + direction))
+        if (next !== state.chapter) {
+          playTick('navigate')
+          scrollToChapter(next, state.reduced)
+        }
+      }
+    }
+
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchend', onTouchEnd, { passive: true })
+    return () => {
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchend', onTouchEnd)
+    }
+  }, [isClassic])
+
   const enter3D = switchTo3D
 
   if (isClassic) {

@@ -46,6 +46,7 @@ export function useInteractive(id: string) {
       if (index >= 0) setChapter(index)
 
       select(target)
+      useExperience.getState().setPanelCollapsed(false)
       playTick('select')
     },
     [id, select, setChapter],

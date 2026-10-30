@@ -72,7 +72,7 @@ export function Intro() {
         </div>
 
         <p className="intro__note">
-          Navigation : molette, flèches ←/→, ou plan accessible à tout moment · son désactivé par
+          Navigation : balayage tactile, molette ou plan accessible à tout moment · son désactivé par
           défaut.
         </p>
       </div>

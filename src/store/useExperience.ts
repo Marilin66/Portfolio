@@ -27,6 +27,8 @@ interface ExperienceState {
   mapOpen: boolean
   introDone: boolean
   classic: boolean
+  /** Vrai si le panneau mobile est réduit pour admirer la pièce 3D. */
+  panelCollapsed: boolean
   /** Vrai quand la scène 3D a fini de se monter (ou est prête à être affichée). */
   sceneReady: boolean
 
@@ -40,6 +42,8 @@ interface ExperienceState {
   setMapOpen: (open: boolean) => void
   finishIntro: () => void
   setClassic: (classic: boolean) => void
+  setPanelCollapsed: (collapsed: boolean) => void
+  togglePanelCollapsed: () => void
   setSceneReady: (ready: boolean) => void
 }
 
@@ -55,6 +59,7 @@ export const useExperience = create<ExperienceState>((set) => ({
   mapOpen: false,
   introDone: false,
   classic: typeof window !== 'undefined' ? classicRequestedByUrl() : false,
+  panelCollapsed: false,
   sceneReady: false,
 
   setChapter: (index) => set({ chapter: index }),
@@ -67,5 +72,7 @@ export const useExperience = create<ExperienceState>((set) => ({
   setMapOpen: (mapOpen) => set({ mapOpen }),
   finishIntro: () => set({ introDone: true }),
   setClassic: (classic) => set({ classic }),
+  setPanelCollapsed: (panelCollapsed) => set({ panelCollapsed }),
+  togglePanelCollapsed: () => set((state) => ({ panelCollapsed: !state.panelCollapsed })),
   setSceneReady: (sceneReady) => set({ sceneReady }),
 }))
