@@ -9,12 +9,24 @@ const base = import.meta.env.BASE_URL.replace(/\/+$/, '')
 export const CLASSIC_PATH = `${base}/classique`
 export const HOME_PATH = `${base}/` || '/'
 
+/**
+ * Événement émis à chaque bascule 2D / 3D.
+ * L'application écoute cet événement en plus de `popstate` : sans lui, le
+ * bouton « Vue classique » changeait l'URL sans changer la vue affichée.
+ */
+export const ROUTE_EVENT = 'mb:routechange'
+
+function notifyRouteChange(): void {
+  window.dispatchEvent(new Event(ROUTE_EVENT))
+}
+
 /** Bascule vers la version 2D, sans rechargement, et met l'URL à jour. */
 export function switchToClassic(): void {
   useExperience.getState().setClassic(true)
   if (window.location.pathname !== CLASSIC_PATH) {
     history.pushState(null, '', CLASSIC_PATH)
   }
+  notifyRouteChange()
 }
 
 /** Revient à la scène 3D depuis la version 2D. */
@@ -29,4 +41,5 @@ export function switchTo3D(): void {
     history.pushState(null, '', HOME_PATH)
   }
   window.scrollTo({ top: 0 })
+  notifyRouteChange()
 }

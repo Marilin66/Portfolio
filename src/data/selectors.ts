@@ -1,7 +1,7 @@
 import raw from './profile.json'
 import { profileSchema, type Profile } from './schema'
 
-/** Contenu validé, unique source de vérité pour les scènes et la version 2D. */
+/** Contenu validé, unique source de vérité pour la scène et l'interface. */
 export const profile: Profile = profileSchema.parse(raw)
 
 /** Marqueur utilisé dans profile.json pour tout ce qui reste à renseigner. */
@@ -24,6 +24,12 @@ export function realValue(value: string | undefined | null): string | null {
   return value
 }
 
+/** Un lien n'est utilisable que s'il est renseigné et vérifié. */
+export function realLink(value: string | undefined | null): string | null {
+  const clean = realValue(value)
+  return clean && /^https?:\/\//i.test(clean) ? clean : null
+}
+
 /** Lien téléphonique propre, sans espaces ni séparateurs. */
 export function phoneHref(value: string): string {
   return `tel:${value.replace(/[^+\d]/g, '')}`
@@ -35,6 +41,8 @@ export function linkedinHref(value: string): string {
   return `https://www.linkedin.com/in/${value.replace(/^@/, '')}`
 }
 
+export const hero = profile.hero
+export const whyChoose = profile.whyChoose
 export const timeline = profile.timeline
 export const experiences = profile.experiences
 export const projects = profile.projects
@@ -46,24 +54,33 @@ export const skillGroups = [
   {
     id: 'tool-dev',
     title: 'Développement logiciel',
+    note: 'Langages, frameworks, architecture',
     items: profile.skills.development,
   },
   {
     id: 'tool-elec',
     title: 'Électricité et systèmes',
+    note: 'Terrain, maintenance, conception',
     items: profile.skills.systems,
   },
 ] as const
 
-/** Champs restant à fournir, listés dans le pied de page et dans le README. */
+/** Coordonnées réellement disponibles (tout le reste s'affiche « À COMPLÉTER »). */
+export const contactLinks = {
+  github: profile.identity.github,
+  email: realValue(profile.identity.email),
+  phone: realValue(profile.identity.phone),
+  linkedin: realValue(profile.identity.linkedin),
+}
+
+/** Champs restant à fournir, listés à la fin de la vue classique. */
 export const pendingFields = [
-  'Intitulé exact et année de la licence',
-  'Dates et missions du stage CAP EPAC',
-  'Missions des stages CAMAH et DREAM TECH',
-  'Lieu et missions du stage à la DGPER',
-  'Lien de démo HOPITEL',
-  'Dépôts GitHub à mettre en avant',
-  'Niveaux de langue',
-  'E-mail, téléphone et LinkedIn',
-  'Destination du formulaire de contact',
+  'Profil LinkedIn',
+  "Photo définitive (fichier public/photo/portrait.jpeg)",
+  'Lien du dépôt public HOPITEL',
+  "Intitulé exact et année d'obtention de la licence",
+  'Dates précises et missions du stage CAP EPAC',
+  'Lieu et missions des stages CAMAH, DREAM TECH et DGPER',
+  'Détail des responsabilités à l’Ensemble Artistique et Culturel et au Campus Ciné Club',
+  'Niveaux de langue (français, fon, anglais)',
 ]

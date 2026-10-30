@@ -4,6 +4,7 @@ import { useExperience } from '../../store/useExperience'
 import { scrollToChapter } from '../../lib/scroll'
 import { playTick } from '../../lib/audio'
 import { useFocusTrap } from '../../hooks/useFocusTrap'
+import { switchToClassic } from '../../lib/routes'
 
 /**
  * Plan de la pièce : un tracé unique, dix zones.
@@ -107,7 +108,7 @@ export function Schematic() {
                     y={node.y + 3.5}
                     textAnchor="middle"
                     fontSize="9"
-                    fontFamily="JetBrains Mono, monospace"
+                    fontFamily="Inter, system-ui, sans-serif"
                     fill={index === chapter ? '#0E93A8' : '#4A5E7C'}
                   >
                     {node.index}
@@ -137,6 +138,20 @@ export function Schematic() {
               <em>{item.kicker}</em>
             </button>
           ))}
+        </div>
+
+        <div className="map__foot">
+          <p>La même histoire, sans 3D ni animation : plus rapide à lire, plus légère à charger.</p>
+          <button
+            type="button"
+            className="map__classic"
+            onClick={() => {
+              setMapOpen(false)
+              switchToClassic()
+            }}
+          >
+            Ouvrir la version 2D
+          </button>
         </div>
       </div>
     </div>

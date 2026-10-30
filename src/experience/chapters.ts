@@ -2,6 +2,7 @@ import { profile } from '../data/selectors'
 
 export type ChapterId =
   | 'bienvenue'
+  | 'pourquoi'
   | 'about'
   | 'parcours'
   | 'skills'
@@ -36,6 +37,14 @@ const REGISTRY: Record<ChapterId, Chapter> = {
     kicker: 'Bienvenue',
     camera: [-6.1, 2.0, 5.4],
     target: [1.4, 1.3, -3.2],
+  },
+  pourquoi: {
+    id: 'pourquoi',
+    index: '01',
+    title: 'Pourquoi me choisir',
+    kicker: 'En quatre points',
+    camera: [5.2, 2.05, 5.6],
+    target: [-0.4, 1.5, -3.4],
   },
   about: {
     id: 'about',

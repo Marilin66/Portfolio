@@ -5,6 +5,7 @@ import { World } from './World'
 import { CameraRig } from './CameraRig'
 import { Effects } from './Effects'
 import { useExperience } from '../store/useExperience'
+import { ZoneLabels } from '../components/ui/ZoneLabels'
 
 /** Signale à l'interface que la scène est réellement montée. */
 function SceneReady() {
@@ -90,6 +91,7 @@ export function Scene() {
         </Suspense>
 
         <CameraRig />
+        <ZoneLabels />
         <Effects />
         <QualityGuard />
       </Canvas>

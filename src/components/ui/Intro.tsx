@@ -1,72 +1,71 @@
-import { useRef } from 'react'
-import { profile } from '../../data/selectors'
+import { useEffect, useRef } from 'react'
+import { hero, profile } from '../../data/selectors'
 import { useExperience } from '../../store/useExperience'
 import { useFocusTrap } from '../../hooks/useFocusTrap'
-
-const BOOT_LABELS = [
-  ['01', "Lumière d'aube"],
-  ['02', 'Pièce-atelier'],
-  ['03', 'Scène 3D'],
-  ['04', 'Lecteur'],
-] as const
+import { switchToClassic } from '../../lib/routes'
 
 /**
- * Écran d'accueil. Le visiteur entre dans le monde comme dans un jeu :
- * un titre, une promesse, puis la pièce s'ouvre derrière.
- * Les lignes de démarrage reflètent l'état réel du chargement de la scène.
+ * Carton d'ouverture, très court : il donne le ton du jeu sans retarder
+ * l'information. Il se referme seul après deux secondes et demie, et reste
+ * traversable à tout moment (« Passer l'intro »).
  */
 export function Intro() {
   const introDone = useExperience((state) => state.introDone)
   const sceneReady = useExperience((state) => state.sceneReady)
+  const reduced = useExperience((state) => state.reduced)
   const finishIntro = useExperience((state) => state.finishIntro)
   const innerRef = useRef<HTMLDivElement>(null)
 
   useFocusTrap(!introDone, innerRef)
 
+  useEffect(() => {
+    if (introDone) return
+    const timer = window.setTimeout(finishIntro, reduced ? 900 : 2600)
+    return () => window.clearTimeout(timer)
+  }, [introDone, reduced, finishIntro])
+
   if (introDone) return null
 
-  const states = ['douce', 'dix zones', sceneReady ? 'prête' : 'chargement', 'prêt']
-
   return (
-    <div className="intro" role="dialog" aria-modal="true" aria-label="Introduction" aria-describedby="intro-tagline">
+    <div
+      className="intro"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Introduction"
+      aria-describedby="intro-message"
+    >
       <div className="intro__inner" ref={innerRef}>
-        <div className="intro__top">
-          <span className="eyebrow">{profile.meta.siteTitle} · Aube</span>
-          <span className="intro__origin">{profile.identity.origin}</span>
-        </div>
-
-        <h1 className="intro__name">
-          <span className="intro__welcome">Bienvenue dans le monde de</span>
-          <span className="intro__big">Marilin,</span>
-          <span className="intro__big intro__big--accent">développeur créatif</span>
-        </h1>
-
-        <p className="intro__role">{profile.identity.role}</p>
-        <p className="intro__tagline" id="intro-tagline">
-          La lumière se lève sur une pièce où l'électricité, le code et les idées se répondent.
+        <p className="eyebrow intro__eyebrow">
+          {profile.meta.siteTitle} · {profile.identity.origin}
         </p>
 
-        <ul className="boot" aria-hidden="true">
-          {BOOT_LABELS.map(([index, label], position) => (
-            <li key={index} style={{ animationDelay: `${0.15 + position * 0.12}s` }}>
-              <span>{index}</span>
-              <span>{label}</span>
-              <span className="boot__dots" />
-              <span>{states[position]}</span>
-            </li>
-          ))}
-        </ul>
+        <h1 className="intro__title" id="intro-message">
+          <span className="intro__line intro__line--soft">Bienvenue dans le monde de</span>
+          <span className="intro__line">Marilin,</span>
+          <span className="intro__line intro__line--accent">développeur créatif</span>
+        </h1>
+
+        <p className="intro__role">{hero.title}</p>
+        <p className="intro__value">{hero.valueProp}</p>
 
         <div className="intro__actions">
           <button type="button" className="btn btn--primary" onClick={finishIntro}>
-            {sceneReady ? 'Entrer dans la pièce' : 'Entrer pendant le chargement'}
+            Entrer maintenant
+          </button>
+          <button type="button" className="btn btn--ghost" onClick={finishIntro}>
+            Passer l'intro
           </button>
         </div>
 
-        <p className="intro__note">
-          Navigation : balayage tactile, molette ou plan accessible à tout moment · son désactivé par
-          défaut.
-        </p>
+        <div className="intro__foot">
+          <span className="status" aria-live="polite">
+            <span className={`status__dot${sceneReady ? ' is-ready' : ''}`} aria-hidden="true" />
+            {sceneReady ? 'Pièce prête' : 'Préparation de la pièce…'}
+          </span>
+          <button type="button" className="link-btn" onClick={switchToClassic}>
+            Vue classique, sans 3D
+          </button>
+        </div>
       </div>
     </div>
   )

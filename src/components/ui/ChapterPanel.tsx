@@ -2,17 +2,18 @@ import { ANCHORS, focusTargetFor } from '../../experience/anchors'
 import { CHAPTERS, chapterIndexById } from '../../experience/chapters'
 import {
   certifications,
+  contactLinks,
   engagement,
   experiences,
   isPending,
   languages,
-  linkedinHref,
-  phoneHref,
   profile,
   projects,
   realValue,
   timeline,
+  whyChoose,
 } from '../../data/selectors'
+import { ProjectCard } from './ProjectCard'
 import { useExperience } from '../../store/useExperience'
 import { playTick } from '../../lib/audio'
 import { scrollToChapter } from '../../lib/scroll'
@@ -62,7 +63,6 @@ function Item({
           if (selected) closeSelection()
           else openInScene(target)
         }}
-        aria-label={`${title} — afficher dans la pièce`}
         data-item={id}
       >
         <span className="item__index">{index}</span>
@@ -103,75 +103,59 @@ function SkillGroup({ title, note, items }: { title: string; note: string; items
           <span>{note}</span>
         </span>
         <span className="group__focus" aria-hidden="true">
-          {selected ? 'Vue d’ensemble' : 'Voir sur l’établi'}
+          {selected ? "Vue d'ensemble" : "Voir sur l'établi"}
         </span>
       </button>
-      <div className="chips">
+      <ul className="chips">
         {items.map((item) => (
-          <span key={item}>{item}</span>
+          <li key={item}>{item}</li>
         ))}
-      </div>
+      </ul>
     </div>
   )
 }
 
-function BienvenueContent() {
+function WhyContent() {
   const reduced = useExperience((state) => state.reduced)
 
   return (
     <>
-      <p className="lede">{profile.meta.welcome}</p>
-      <p>{profile.intro.about}</p>
-      <div className="quote">
-        <span className="eyebrow">Ce qui me fait avancer</span>
-        <p>{profile.intro.motivation}</p>
-      </div>
-      <dl className="facts">
-        <div>
-          <dt>Origine</dt>
-          <dd>{profile.identity.origin}</dd>
-        </div>
-        <div>
-          <dt>Rôle</dt>
-          <dd>{profile.identity.role}</dd>
-        </div>
-        <div>
-          <dt>GitHub</dt>
-          <dd>
-            <a href={profile.identity.github} target="_blank" rel="noreferrer">
-              marilin66 ↗
-            </a>
-          </dd>
-        </div>
-      </dl>
-      <button
-        type="button"
-        className="cta"
-        onClick={() => {
-          playTick('navigate')
-          scrollToChapter(1, reduced)
-        }}
-      >
-        <span>Entrer dans la pièce</span>
-        <span aria-hidden="true">↓</span>
-      </button>
-      <div className="section">
-        <span className="eyebrow">Les zones de la pièce</span>
-        <div className="zones">
-          {CHAPTERS.slice(1).map((chapter, index) => (
-            <button
-              key={chapter.id}
-              type="button"
-              onClick={() => {
-                playTick('navigate')
-                scrollToChapter(index + 1, reduced)
-              }}
-            >
-              <span>{chapter.index}</span>
-              {chapter.title}
-            </button>
-          ))}
-        </div>
+      <p className="lede">{whyChoose.lede}</p>
+      <ul className="why-list">
+        {whyChoose.items.map((item, index) => (
+          <li key={item.id} className="why-item">
+            <span className="why-item__index" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <div>
+              <span className="tag tag--soft">{item.proof}</span>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div className="panel__cta-row">
+        <button
+          type="button"
+          className="btn btn--primary"
+          onClick={() => {
+            playTick('navigate')
+            scrollToChapter(chapterIndexById('projects'), reduced)
+          }}
+        >
+          Voir les projets <span aria-hidden="true">→</span>
+        </button>
+        <button
+          type="button"
+          className="btn btn--secondary"
+          onClick={() => {
+            playTick('navigate')
+            scrollToChapter(chapterIndexById('contact'), reduced)
+          }}
+        >
+          Me contacter
+        </button>
       </div>
     </>
   )
@@ -183,19 +167,18 @@ function AboutContent() {
   return (
     <>
       <div className="portrait">
-        <div className="portrait__frame" aria-hidden={photo ? undefined : 'true'}>
-          {photo ? (
-            <img src={photo} alt={`Portrait de ${profile.identity.name}`} />
-          ) : (
-            <span>MB</span>
-          )}
+        <div className="portrait__frame">
+          <img src={photo} alt={`Portrait de ${profile.identity.name}`} loading="lazy" />
         </div>
         <div className="portrait__meta">
           <span className="eyebrow">Portrait</span>
-          <p className="muted">{photo ? 'Marilin BADJI' : 'Photo à fournir'}</p>
-          {!photo && <p className="note">{profile.photo.note}</p>}
+          <p className="portrait__name">{profile.identity.name}</p>
+          <p className="portrait__place">{profile.identity.origin}</p>
+          <p className="note">{profile.photo.note}</p>
         </div>
       </div>
+
+      <p className="lede">{profile.intro.about}</p>
 
       {profile.aboutChapters.map((chapter, index) => (
         <article key={chapter.id} className="story">
@@ -207,20 +190,20 @@ function AboutContent() {
         </article>
       ))}
 
-      <div className="section">
-        <span className="eyebrow">Langues</span>
+      <section className="section-block">
+        <h3 className="section-block__title">Langues</h3>
         <ul className="plain">
           {languages.map((language) => {
             const level = realValue(language.level)
             return (
               <li key={language.id}>
                 <span>{language.name}</span>
-                <span className={level ? '' : 'muted'}>{level ?? 'Niveau à préciser'}</span>
+                <span className={level ? '' : 'is-pending'}>{level ?? 'À COMPLÉTER'}</span>
               </li>
             )
           })}
         </ul>
-      </div>
+      </section>
     </>
   )
 }
@@ -242,7 +225,7 @@ function ParcoursContent() {
           />
         ))}
       </ul>
-      <p className="note">Les étapes sont posées sur la bibliothèque, à gauche de la pièce.</p>
+      <p className="note">Ces étapes sont posées sur la bibliothèque, à gauche de la pièce.</p>
     </>
   )
 }
@@ -271,53 +254,16 @@ function ProjectsContent() {
   return (
     <>
       <p className="lede">
-        {projects.length} projets, deux sources : mon dossier et mon GitHub.
+        Quatre projets, dont deux accessibles en ligne. Chaque lien mène au dépôt ou à la démo.
       </p>
-      {projects.map((project) => (
-        <article
-          key={project.id}
-          className="card"
-          onMouseEnter={() => hover('zone-projects')}
-          onMouseLeave={() => hover(null)}
-        >
-          <div className="card__top">
-            <span className="eyebrow">{project.kind}</span>
-            <span className={`badge${project.source === 'GitHub' ? ' badge--github' : ''}`}>
-              {project.source}
-            </span>
-          </div>
-          <h3>{project.name}</h3>
-          <p>{project.summary}</p>
-          {!isPending(project.role) && <p className="role">{project.role}</p>}
-          <div className="chips">
-            {project.stack.map((item) => (
-              <span key={item}>{item}</span>
-            ))}
-          </div>
-          <div className="links">
-            {project.demo.startsWith('http') ? (
-              <a href={project.demo} target="_blank" rel="noreferrer">
-                Démo ↗
-              </a>
-            ) : (
-              <span className="muted">Démo à venir</span>
-            )}
-            {project.repo.startsWith('http') ? (
-              <a href={project.repo} target="_blank" rel="noreferrer">
-                Code ↗
-              </a>
-            ) : (
-              <span className="muted">Dépôt à venir</span>
-            )}
-            <button type="button" className="linklike" onClick={() => openInScene('zone-projects')}>
-              Voir dans la pièce
-            </button>
-          </div>
-        </article>
-      ))}
+      <div className="project-list" onMouseEnter={() => hover('zone-projects')} onMouseLeave={() => hover(null)}>
+        {projects.map((project) => (
+          <ProjectCard key={project.id} project={project} onShowInScene={() => openInScene('zone-projects')} />
+        ))}
+      </div>
       <p className="note">
-        Les aperçus affichés sur les écrans du bureau sont des illustrations abstraites, pas des
-        captures d'écran.
+        Les aperçus affichés sur les écrans du bureau sont des illustrations, pas des captures
+        d'écran.
       </p>
     </>
   )
@@ -326,11 +272,12 @@ function ProjectsContent() {
 function ExperiencesContent() {
   return (
     <>
-      <p className="lede">Un câble par expérience, du chantier au système.</p>
+      <p className="lede">Six étapes de terrain, du câblage à la maintenance des systèmes.</p>
       <ul className="items">
         {experiences.map((experience) => {
           const place = realValue(experience.place)
-          const detail = isPending(experience.detail) ? 'Détails à venir.' : experience.detail
+          const detail = realValue(experience.detail)
+          const extra = [place ? `Lieu : ${place}` : 'Lieu : à compléter', detail ?? 'Missions : à compléter']
           return (
             <Item
               key={experience.id}
@@ -339,7 +286,7 @@ function ExperiencesContent() {
               index={experience.period}
               title={experience.org}
               subtitle={experience.role}
-              detail={place ? `${detail} Lieu : ${place}` : detail}
+              detail={extra.join(' · ')}
             />
           )
         })}
@@ -351,9 +298,7 @@ function ExperiencesContent() {
 function CertificationsContent() {
   return (
     <>
-      <p className="lede">
-        {certifications.length} certificats YALI, posés sur l'étagère.
-      </p>
+      <p className="lede">{certifications.length} certificats YALI, posés sur l'étagère.</p>
       <ul className="items">
         {certifications.map((certification, index) => (
           <Item
@@ -383,7 +328,7 @@ function EngagementContent() {
             index="—"
             title={item.name}
             subtitle={item.role}
-            detail={isPending(item.detail) ? 'Détails à venir.' : item.detail}
+            detail={isPending(item.detail) ? 'Détail des missions à compléter.' : item.detail}
           />
         ))}
       </ul>
@@ -397,7 +342,7 @@ function EngagementContent() {
 function AmbitionsContent() {
   return (
     <>
-      <p className="lede">Que le travail parle pour lui.</p>
+      <p className="lede">La direction donnée au travail, en quatre points.</p>
       <ol className="ambitions">
         {profile.ambitions.map((ambition, index) => (
           <li key={ambition}>
@@ -415,68 +360,64 @@ function AmbitionsContent() {
 }
 
 function ContactContent() {
-  const email = realValue(profile.identity.email)
-  const phone = realValue(profile.identity.phone)
-  const linkedin = realValue(profile.identity.linkedin)
-
   return (
     <>
-      <p className="lede">La porte est ouverte.</p>
-      <ul className="plain">
+      <p className="lede">
+        Un projet, un stage, une collaboration : les coordonnées utiles sont réunies ici.
+      </p>
+      <ul className="contact-list">
         <li>
-          <span>GitHub</span>
-          <a href={profile.identity.github} target="_blank" rel="noreferrer">
+          <span className="contact-list__label">GitHub</span>
+          <a href={contactLinks.github} target="_blank" rel="noreferrer">
             github.com/marilin66 ↗
           </a>
         </li>
         <li>
-          <span>E-mail</span>
-          {email ? (
-            <a href={`mailto:${email}`}>{email}</a>
+          <span className="contact-list__label">E-mail</span>
+          {contactLinks.email ? (
+            <a href={`mailto:${contactLinks.email}`}>{contactLinks.email}</a>
           ) : (
-            <span className="muted">À fournir</span>
+            <span className="is-pending">À COMPLÉTER</span>
           )}
         </li>
         <li>
-          <span>Téléphone</span>
-          {phone ? (
-            <a href={phoneHref(phone)}>{phone}</a>
+          <span className="contact-list__label">Téléphone</span>
+          {contactLinks.phone ? (
+            <a href={`tel:${contactLinks.phone.replace(/[^+\d]/g, '')}`}>{contactLinks.phone}</a>
           ) : (
-            <span className="muted">À fournir</span>
+            <span className="is-pending">À COMPLÉTER</span>
           )}
         </li>
         <li>
-          <span>LinkedIn</span>
-          {linkedin ? (
-            <a href={linkedinHref(linkedin)} target="_blank" rel="noreferrer">
+          <span className="contact-list__label">LinkedIn</span>
+          {contactLinks.linkedin ? (
+            <a href={contactLinks.linkedin} target="_blank" rel="noreferrer">
               Profil ↗
             </a>
           ) : (
-            <span className="muted">À fournir</span>
+            <span className="is-pending">À COMPLÉTER</span>
           )}
         </li>
       </ul>
-      {email && (
-        <a className="cta" href={`mailto:${email}`}>
-          <span>Écrire un message</span>
-          <span aria-hidden="true">↗</span>
+
+      <div className="panel__cta-row">
+        <a className="btn btn--primary" href={contactLinks.github} target="_blank" rel="noreferrer">
+          Ouvrir le GitHub <span aria-hidden="true">↗</span>
         </a>
-      )}
-      <a className="cta" href={profile.identity.github} target="_blank" rel="noreferrer">
-        <span>Ouvrir mon GitHub</span>
-        <span aria-hidden="true">↗</span>
-      </a>
-      {(!email || !phone || !linkedin) && (
-        <p className="note">
-          Certaines coordonnées seront ajoutées dès qu'elles seront fournies.
-        </p>
-      )}
+      </div>
+
+      <p className="note">
+        Adresse e-mail, téléphone et LinkedIn seront ajoutés dès réception : ils ne sont pas
+        inventés.
+      </p>
     </>
   )
 }
 
 function ChapterBody({ index }: { index: number }) {
   switch (CHAPTERS[index]?.id) {
+    case 'pourquoi':
+      return <WhyContent />
     case 'about':
       return <AboutContent />
     case 'parcours':
@@ -496,7 +437,7 @@ function ChapterBody({ index }: { index: number }) {
     case 'contact':
       return <ContactContent />
     default:
-      return <BienvenueContent />
+      return null
   }
 }
 
@@ -513,6 +454,9 @@ export function ChapterPanel() {
   const panelCollapsed = useExperience((state) => state.panelCollapsed)
   const togglePanelCollapsed = useExperience((state) => state.togglePanelCollapsed)
   const data = CHAPTERS[Math.min(chapter, CHAPTERS.length - 1)]
+
+  // Le premier écran est occupé par le hero : pas de panneau par-dessus.
+  if (!data || chapter === 0) return null
 
   const hasPrev = chapter > 0
   const hasNext = chapter < CHAPTERS.length - 1
@@ -544,8 +488,8 @@ export function ChapterPanel() {
           </span>
           <div className="panel__head-actions">
             {selectedId && (
-              <button type="button" className="panel__back" onClick={closeSelection}>
-                Vue d’ensemble
+              <button type="button" className="link-btn" onClick={closeSelection}>
+                Vue d'ensemble
               </button>
             )}
             <button
@@ -564,7 +508,7 @@ export function ChapterPanel() {
           <div className="panel__nav-arrows">
             <button
               type="button"
-              className="panel__nav-btn"
+              className="icon-btn"
               onClick={goPrev}
               disabled={!hasPrev}
               aria-label="Zone précédente"
@@ -576,7 +520,7 @@ export function ChapterPanel() {
             </span>
             <button
               type="button"
-              className="panel__nav-btn"
+              className="icon-btn"
               onClick={goNext}
               disabled={!hasNext}
               aria-label="Zone suivante"

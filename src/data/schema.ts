@@ -12,6 +12,26 @@ export const profileSchema = z.object({
     welcome: z.string(),
     updated: z.string(),
   }),
+  hero: z.object({
+    title: z.string(),
+    valueProp: z.string(),
+    valuePropAlternatives: z.array(z.string()),
+    ctaPrimary: z.string(),
+    ctaSecondary: z.string(),
+    hint: z.string(),
+  }),
+  whyChoose: z.object({
+    title: z.string(),
+    lede: z.string(),
+    items: z.array(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        body: z.string(),
+        proof: z.string(),
+      }),
+    ),
+  }),
   identity: z.object({
     name: z.string(),
     firstName: z.string(),
@@ -71,6 +91,7 @@ export const profileSchema = z.object({
       stack: z.array(z.string()),
       demo: z.string(),
       repo: z.string(),
+      linkNote: z.string(),
       source: z.string(),
     }),
   ),
@@ -100,6 +121,7 @@ export const profileSchema = z.object({
   ambitions: z.array(z.string()),
   ui: z.object({
     chapterOrder: z.array(z.string()),
+    nav: z.array(z.object({ label: z.string(), chapter: z.string() })),
     placeholders: z.array(z.string()),
   }),
 })

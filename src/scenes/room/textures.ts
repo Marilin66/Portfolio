@@ -150,13 +150,13 @@ export function makePortraitTexture(): THREE.CanvasTexture {
   ctx.stroke()
 
   ctx.fillStyle = '#F4EFE6'
-  ctx.font = '700 112px "Montserrat", "Space Grotesk", system-ui, sans-serif'
+  ctx.font = '700 112px "Montserrat", system-ui, sans-serif'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
   ctx.fillText('MB', 256, 268)
 
   ctx.fillStyle = 'rgba(180, 235, 245, 0.9)'
-  ctx.font = '500 20px "JetBrains Mono", monospace'
+  ctx.font = '600 18px "Inter", system-ui, sans-serif'
   ctx.fillText('PHOTO À FOURNIR', 256, 452)
 
   ctx.fillStyle = 'rgba(244, 240, 230, 0.5)'
@@ -197,7 +197,7 @@ export function makeScreenTexture(label: string, accent: string): THREE.CanvasTe
   ctx.globalAlpha = 1
 
   ctx.fillStyle = '#F4EFE6'
-  ctx.font = '700 28px "Montserrat", "Space Grotesk", system-ui, sans-serif'
+  ctx.font = '700 28px "Montserrat", system-ui, sans-serif'
   ctx.textAlign = 'left'
   const words = label.split(' ')
   const lines: string[] = []
